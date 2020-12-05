@@ -3,19 +3,30 @@ import neat
 import time
 import os
 import random
+
+######
+
+PIPE_SPACING = 100
+
+######
+
 pygame.font.init()
 
-winWidth = 600
+winWidth = 500
 winHeight = 800
 
-win = pygame.display.set_mode((winWidth, winHeight))
+gen = -1
 
-pipeImg = pygame.transform.scale2x(pygame.image.load(os.path.join("sprites","pipe.png")).convert_alpha())
-bgImg = pygame.transform.scale(pygame.image.load(os.path.join("sprites","bg.png")).convert_alpha(), (600, 900))
-birdImgs = [pygame.transform.scale2x(pygame.image.load(os.path.join("sprites","bird" + str(x) + ".png"))) for x in range(1,4)]
-groundImg = pygame.transform.scale2x(pygame.image.load(os.path.join("sprites","ground.png")).convert_alpha())
+pipeImg = pygame.transform.scale2x(pygame.image.load(
+    os.path.join("sprites", "pipe.png")))
+bgImg = pygame.transform.scale2x(pygame.image.load(
+    os.path.join("sprites", "bg.png")))
+birdImgs = [pygame.transform.scale2x(pygame.image.load(
+    os.path.join("sprites", "bird" + str(x) + ".png"))) for x in range(1, 4)]
+groundImg = pygame.transform.scale2x(pygame.image.load(
+    os.path.join("sprites", "ground.png")))
 
-scoreFont = pygame.font.SysFont("comicsans", 50)
+font = pygame.font.SysFont("comicsans", 50)
 
 
 class Bird:
@@ -157,14 +168,17 @@ class Ground:
         win.blit(self.img, (self.x2, self.y))
 
 
-def drawWindow(win, birds, pipes, ground, score):
+def drawWindow(win, birds, pipes, ground, score, gen):
     win.blit(bgImg, (0, 0))
 
     for pipe in pipes:
         pipe.draw(win)
 
-    text = scoreFont.render("Score: " + str(score), 1, (255, 255, 255))
-    win.blit(text, (winWidth - 15 - text.get_width(), 10))
+    scoreText = font.render("Score: " + str(score), 1, (255, 255, 255))
+    genText = font.render("Gen: " + str(gen), 1, (255, 255, 255))
+    win.blit(scoreText, (winWidth - 15 - scoreText.get_width(), 10))
+    win.blit(genText, (winWidth - 15 - genText.get_width(),
+                       20 + genText.get_height()))
 
     ground.draw(win)
 
@@ -175,7 +189,11 @@ def drawWindow(win, birds, pipes, ground, score):
 
 
 def main(genomes, config):
-    global win
+    global PIPE_SPACING
+    global gen
+
+    gen += 1
+
     birds = []
     nets = []
     ge = []
@@ -189,10 +207,11 @@ def main(genomes, config):
         ge.append(g)
 
     ground = Ground(730)
-    pipes = [Pipe(700)]
+    pipes = [Pipe(PIPE_SPACING + 500)]
 
     score = 0
 
+    win = pygame.display.set_mode((winWidth, winHeight))
     run = True
     clock = pygame.time.Clock()
 
@@ -216,7 +235,8 @@ def main(genomes, config):
             ge[x].fitness += 0.1
             bird.move()
 
-            output = nets[x].activate((bird.y, abs(bird.y - pipes[pipeIndex].height), abs(bird.y - pipes[pipeIndex].bottom)))
+            output = nets[x].activate((bird.y, abs(
+                bird.y - pipes[pipeIndex].height), abs(bird.y - pipes[pipeIndex].bottom)))
 
             if output[0] > 0.5:
                 bird.jump()
@@ -245,7 +265,7 @@ def main(genomes, config):
             score += 1
             for g in ge:
                 g.fitness += 5
-            pipes.append(Pipe(700))
+            pipes.append(Pipe(PIPE_SPACING + 500))
 
         for r in rem:
             pipes.remove(r)
@@ -256,7 +276,7 @@ def main(genomes, config):
                 nets.pop(x)
                 ge.pop(x)
 
-        drawWindow(win, birds, pipes, ground, score)
+        drawWindow(win, birds, pipes, ground, score, gen)
 
 
 def run(configPath):
