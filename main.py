@@ -7,6 +7,7 @@ import random
 ######
 
 PIPE_SPACING = 100
+TICK_SPEED = 240
 
 ######
 
@@ -190,6 +191,7 @@ def drawWindow(win, birds, pipes, ground, score, gen):
 
 def main(genomes, config):
     global PIPE_SPACING
+    global TICK_SPEED
     global gen
 
     gen += 1
@@ -212,11 +214,12 @@ def main(genomes, config):
     score = 0
 
     win = pygame.display.set_mode((winWidth, winHeight))
+    pygame.display.set_caption('Flappy Bird AI')
     run = True
     clock = pygame.time.Clock()
 
     while run:
-        clock.tick(120)
+        clock.tick(TICK_SPEED)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
