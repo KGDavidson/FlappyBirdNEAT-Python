@@ -273,5 +273,5 @@ def run(configPath):
 
 if __name__ == "__main__":
     localDir = os.path.dirname(__file__)
-    configPath = os.path.join(localDir, 'config-feedforward.txt')
+    configPath = os.path.join(localDir, 'config.txt')
     run(configPath)
