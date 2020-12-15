@@ -18,14 +18,14 @@ winHeight = 800
 
 gen = -1
 
-pipeImg = pygame.transform.scale2x(pygame.image.load(
-    os.path.join("sprites", "pipe.png")))
-bgImg = pygame.transform.scale2x(pygame.image.load(
-    os.path.join("sprites", "bg.png")))
+pipeImg = pygame.transform.scale2x(
+    pygame.image.load(os.path.join("sprites", "pipe.png")))
+bgImg = pygame.transform.scale2x(
+    pygame.image.load(os.path.join("sprites", "bg.png")))
 birdImgs = [pygame.transform.scale2x(pygame.image.load(
     os.path.join("sprites", "bird" + str(x) + ".png"))) for x in range(1, 4)]
-groundImg = pygame.transform.scale2x(pygame.image.load(
-    os.path.join("sprites", "ground.png")))
+groundImg = pygame.transform.scale2x(
+    pygame.image.load(os.path.join("sprites", "ground.png")))
 
 font = pygame.font.SysFont("comicsans", 50)
 
