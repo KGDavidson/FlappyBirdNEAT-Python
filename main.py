@@ -7,7 +7,7 @@ import random
 ######
 
 PIPE_SPACING = 100
-TICK_SPEED = 240
+TICK_SPEED = 120
 
 ######
 
